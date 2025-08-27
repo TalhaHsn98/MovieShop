@@ -1,7 +1,21 @@
+using ApplicationCore.Contracts.Repository;
+using ApplicationCore.Contracts.Services;
+using Infrastructure.Data;
+using Infrastructure.Repositories;
+using Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<IMovieService, MovieService>();
+
+builder.Services.AddDbContext<MovieShopDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("MovieShopConnection")
+    ));
 
 var app = builder.Build();
 
@@ -9,7 +23,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

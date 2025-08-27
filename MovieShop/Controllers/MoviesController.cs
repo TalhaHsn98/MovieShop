@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using ApplicationCore.Contracts.Services;
+using ApplicationCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using MovieShopMVC.Models;
 
@@ -7,15 +9,19 @@ namespace MovieShopMVC.Controllers
     public class MoviesController : Controller
     {
         private readonly ILogger<MoviesController> _logger;
+        private readonly IMovieService _movieService;
 
-        public MoviesController(ILogger<MoviesController> logger)
+        public MoviesController(ILogger<MoviesController> logger, IMovieService movieService)
         {
             _logger = logger;
+            _movieService = movieService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<MovieCardModel> movies = await _movieService.Top30Movies();
+
+            return View(movies);
         }
 
         public IActionResult Privacy()
