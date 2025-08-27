@@ -24,6 +24,14 @@ namespace MovieShopMVC.Controllers
             return View(movies);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> MovieDetails(int id)
+        {
+            var movie = _movieService.GetMovieDetails(id);
+
+            return View(movie);
+        } 
+
         public IActionResult Privacy()
         {
             return View();

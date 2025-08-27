@@ -20,6 +20,32 @@ namespace Infrastructure.Services
         {
             _movieRepository = movieRepository;
         }
+
+        public MovieDetailsModel GetMovieDetails(int id)
+        {
+            var movie = _movieRepository.GetById(id);
+
+            if (movie != null) 
+            {
+                var movieDetailsModel = new MovieDetailsModel()
+                {
+                    Id = movie.Id,
+                    PosterURL = movie.PosterUrl,
+                    Title = movie.Title,
+                    Budget = movie.Budget,
+                    Overview = movie.Overview,
+                    Tagline = movie.Tagline,
+                    Revenue = movie.Revenue
+                };
+
+                return movieDetailsModel;
+            }
+
+            return null;
+
+
+        }
+
         public Task<List<MovieCardModel>> Top30Movies()
         {
            return _movieRepository.GetTop30Async();

@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Contracts.Repository;
+using ApplicationCore.Entities;
 using ApplicationCore.Models;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -10,17 +11,19 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class MovieRepository : IMovieRepository
+    public class MovieRepository : BaseRepsitory<Movie>, IMovieRepository
 
     {
-        private readonly MovieShopDbContext _ctx;
-        public MovieRepository(MovieShopDbContext ctx)
+        public MovieRepository(MovieShopDbContext dbContext): base(dbContext) { }
 
-        { _ctx = ctx; }
-
-        public Task<List<MovieCardModel>> GetTop30Async()
+        public Task<MovieDetailsModel> GetMovieDetails(int id)
         {
-            return _ctx.Movies
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<MovieCardModel>> GetTop30Async()
+        {
+            return await _dbContext.Movies
                 .OrderByDescending(m => m.Revenue)
                 .Take(30)
                 .Select(m => new MovieCardModel
@@ -33,5 +36,5 @@ namespace Infrastructure.Repositories
         }
 
 
-    }
+    } 
 }

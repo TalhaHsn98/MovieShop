@@ -10,5 +10,7 @@ namespace ApplicationCore.Contracts.Services
     public interface IMovieService
     {
         Task<List<MovieCardModel>> Top30Movies();
+
+        MovieDetailsModel GetMovieDetails(int id);
     }
 }

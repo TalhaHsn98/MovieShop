@@ -1,7 +1,7 @@
 ﻿@model ApplicationCore.Models.MovieCardModel
 
 <div class="card h-100">
-    <a asp-controller="Movies" asp-action="Details" asp-route-id="@Model.Id">
+    <a asp-controller="Movies" asp-action="MovieDetails" asp-route-id="@Model.Id">
         <img class="card-img-top"
              src="@(string.IsNullOrWhiteSpace(Model.PosterURL) ? "/images/placeholder.png" : Model.PosterURL)"
              alt="@(Model.Title ?? "Movie")" />
@@ -11,7 +11,7 @@
     </div>
     <div class="card-footer bg-transparent">
         <a class="btn btn-sm btn-primary w-100"
-           asp-controller="Movies" asp-action="Details" asp-route-id="@Model.Id">
+           asp-controller="Movies" asp-action="MovieDetails" asp-route-id="@Model.Id">
             View
         </a>
     </div>

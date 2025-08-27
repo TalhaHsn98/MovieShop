@@ -6,12 +6,17 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Models
 {
-    public class MovieCardModel
+    public class MovieDetailsModel
     {
-        public int Id   { get; set; }
+        public int Id { get; set; } 
         public string Title { get; set; }
+
         public string PosterURL { get; set; }
 
+        public decimal? Budget { get; set; }
+        public string? Overview { get; set; }
+        public decimal? Revenue { get; set; }
 
+        public string? Tagline { get; set; }
     }
 }
