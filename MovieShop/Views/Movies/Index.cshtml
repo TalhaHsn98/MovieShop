@@ -1,5 +1,4 @@
 ﻿@model List<ApplicationCore.Models.MovieCardModel>
-
 @{
     ViewData["Title"] = "Top 30 Movies";
 }
@@ -17,22 +16,7 @@
             @foreach (var m in Model)
             {
                 <div class="col">
-                    <div class="card h-100">
-                        <a asp-controller="Movies" asp-action="Details" asp-route-id="@m.Id">
-                            <img class="card-img-top"
-                                 src="@(string.IsNullOrWhiteSpace(m.PosterURL) ? "/images/placeholder.png" : m.PosterURL)"
-                                 alt="@(m.Title ?? "Movie")" />
-                        </a>
-                        <div class="card-body">
-                            <h6 class="card-title text-truncate" title="@m.Title">@m.Title</h6>
-                        </div>
-                        <div class="card-footer bg-transparent">
-                            <a class="btn btn-sm btn-primary w-100"
-                               asp-controller="Movies" asp-action="Details" asp-route-id="@m.Id">
-                                View
-                            </a>
-                        </div>
-                    </div>
+                    <partial name="_MovieCard" model="m" />
                 </div>
             }
         </div>
