@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Contracts.Repository
 {
-    public interface IMovieRepository: IRepository<Movie>
+    public interface IMovieRepository : IRepository<Movie>
     {
         Task<List<MovieCardModel>> GetTop30Async();
 
-        Task<MovieDetailsModel> GetMovieDetails(int id);
+        Task<Movie?> GetByIdWithDetailsAsync(int id);
     }
+
 }

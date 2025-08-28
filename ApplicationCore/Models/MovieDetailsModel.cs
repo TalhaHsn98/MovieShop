@@ -18,5 +18,21 @@ namespace ApplicationCore.Models
         public decimal? Revenue { get; set; }
 
         public string? Tagline { get; set; }
+        public DateTime? ReleaseDate { get; set; }
+
+        public int? RunTime { get; set; }
+
+        public string? OriginalLanguage { get; set; }
+
+        public decimal? Price { get; set; }
+
+        public decimal? AverageRating { get; set; }
+
+
+        public List<string> Genres { get; set; } = new();
+        public List<TrailerModel> Trailers { get; set; } = new();
+        public List<CastModel> Casts { get; set; } = new();
+
+
     }
 }

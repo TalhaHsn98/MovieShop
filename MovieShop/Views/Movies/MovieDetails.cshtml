@@ -1,32 +1,184 @@
-﻿@model ApplicationCore.Models.MovieDetailsModel;
+﻿@model ApplicationCore.Models.MovieDetailsModel
 
+<div class="container py-4">
 
-<div class="container mt-5">
-
-    <div class = " row">
-        <div class="col-md-4">
-            <img src="@Model.PosterURL" alt="@Model.Title" class="img-fluid rounded"/>
+    <div class="row g-4 align-items-start">
+        <div class="col-12 col-md-3">
+            <img class="img-fluid rounded shadow-sm w-100"
+                 src="@(string.IsNullOrWhiteSpace(Model.PosterURL) ? "/images/placeholder.png" : Model.PosterURL)"
+                 alt="@Model.Title" />
         </div>
-        <div class="col-md-8">
-            <h2>@Model.Title</h2>
-            <h5 class="text-muted">@Model.Tagline</h5>
-            <p class="mt-3">
-                <strong>Overview:</strong>@Model.Overview
-            </p>
-            <p>
-                <strong>Budget:</strong>@($"{Model.Budget:C}")
-                <strong>Revenue:</strong> @($"{Model.Revenue:C}")
-            </p>
-            <div class="mt-3">
-                <a asp-action="Edit" asp-controller="Movies" asp-route-id = "@Model.Id"
-                    class="btn btn-primary me-2">Edit</a>
-                <form asp-action="DeleteMovie" asp-controller="Movies" asp-route-id="@Model.Id" method="post" class="mt-2">
-                    <button type="submit" class="btn bg-danger" onclick="return confirm('Are you sure you want to delete this movie?')">
-                        Delete
-                    </button>
+
+        <div class="col-12 col-md-6">
+            <h1 class="mb-1">@Model.Title</h1>
+            @if (!string.IsNullOrWhiteSpace(Model.Tagline))
+            {
+                <div class="text-muted mb-2">@Model.Tagline</div>
+            }
+
+            <div class="mb-2 small text-muted">
+                @if (Model.RunTime.HasValue)
+                {
+                    <span>@Model.RunTime m</span>
+                }
+                @if (Model.ReleaseDate.HasValue)
+                {
+                    <span class="ms-3">@Model.ReleaseDate.Value.ToString("yyyy")</span>
+                }
+            </div>
+
+            <div class="mb-3">
+                @foreach (var g in Model.Genres ?? Enumerable.Empty<string>())
+                {
+                    <span class="badge bg-secondary me-1">@g</span>
+                }
+                @if (Model.AverageRating.HasValue)
+                {
+                    <span class="badge bg-success ms-1">@Model.AverageRating.Value.ToString("0.0")</span>
+                }
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Overview))
+            {
+                <p class="mb-0">@Model.Overview</p>
+            }
+        </div>
+
+        <div class="col-12 col-md-3 d-grid gap-2">
+            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                REVIEW
+            </button>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#buyModal">
+                BUY @((Model.Price?.ToString("C")) ?? "")
+            </button>
+        </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-6">
+            <h5 class="mb-3">MOVIE FACTS</h5>
+            <ul class="list-group mb-4">
+                <li class="list-group-item d-flex justify-content-between">
+                    <span><i class="bi bi-calendar3 me-2"></i>Release Date</span>
+                    <span>@(Model.ReleaseDate?.ToString("MMM dd, yyyy") ?? "—")</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span><i class="bi bi-hourglass-split me-2"></i>Run Time</span>
+                    <span>@(Model.RunTime.HasValue ? $"{Model.RunTime} m" : "—")</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span><i class="bi bi-cash-stack me-2"></i>Box Office</span>
+                    <span>@(Model.Revenue?.ToString("C") ?? "—")</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span><i class="bi bi-cash me-2"></i>Budget</span>
+                    <span>@(Model.Budget?.ToString("C") ?? "—")</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span><i class="bi bi-translate me-2"></i>Language</span>
+                    <span>@(Model.OriginalLanguage ?? "—")</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span><i class="bi bi-tag me-2"></i>Price</span>
+                    <span>@(Model.Price?.ToString("C") ?? "—")</span>
+                </li>
+            </ul>
+
+            <h5 class="mb-3">TRAILERS</h5>
+            <div class="list-group">
+                @foreach (var t in Model.Trailers ?? Enumerable.Empty<ApplicationCore.Models.TrailerModel>())
+                {
+                    <a class="list-group-item list-group-item-action"
+                       href="@t.TrailerUrl" target="_blank" rel="noopener">
+                        <i class="bi bi-play-circle me-2"></i>@t.Name
+                    </a>
+                }
+                @if ((Model.Trailers?.Count ?? 0) == 0)
+                {
+                    <div class="text-muted">No trailers available.</div>
+                }
+            </div>
+        </div>
+
+        <!-- Right: Cast -->
+        <div class="col-12 col-lg-6">
+            <h5 class="mb-3">CAST</h5>
+            <div class="list-group">
+                @foreach (var c in Model.Casts ?? Enumerable.Empty<ApplicationCore.Models.CastModel>())
+                {
+                    <a class="list-group-item list-group-item-action d-flex align-items-center"
+                       asp-controller="Casts" asp-action="Details" asp-route-id="@c.Id">
+                        <img src="@(string.IsNullOrWhiteSpace(c.ProfilePath) ? "/images/cast-placeholder.png" : c.ProfilePath)"
+                             class="rounded me-3" style="width:48px;height:64px;object-fit:cover;" alt="@c.Name" />
+                        <div class="flex-grow-1">
+                            <div class="fw-semibold">@c.Name</div>
+                            <small class="text-muted">as @c.Character</small>
+                        </div>
+                    </a>
+                }
+                @if ((Model.Casts?.Count ?? 0) == 0)
+                {
+                    <div class="text-muted">No cast information.</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="buyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Buy “@Model.Title”</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Price: <strong>@(Model.Price?.ToString("C") ?? "—")</strong>
+            </div>
+            <div class="modal-footer">
+                <form method="post" asp-controller="Purchases" asp-action="Buy">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="movieId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-success">Purchase</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                 </form>
             </div>
         </div>
     </div>
+</div>
 
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Review “@Model.Title”</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" asp-controller="Reviews" asp-action="Create">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <input type="hidden" name="movieId" value="@Model.Id" />
+                    <div class="mb-3">
+                        <label class="form-label">Rating</label>
+                        <select class="form-select" name="rating" required>
+                            @for (int i = 1; i <= 10; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Your Review</label>
+                        <textarea class="form-control" name="reviewText" rows="4" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

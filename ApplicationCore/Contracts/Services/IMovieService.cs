@@ -11,6 +11,8 @@ namespace ApplicationCore.Contracts.Services
     {
         Task<List<MovieCardModel>> Top30Movies();
 
-        MovieDetailsModel GetMovieDetails(int id);
+        Task<MovieDetailsModel> GetMovieDetails(int id);
+
+        bool DeleteMovie(int id);
     }
 }

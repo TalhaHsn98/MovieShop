@@ -21,21 +21,44 @@ namespace Infrastructure.Services
             _movieRepository = movieRepository;
         }
 
-        public MovieDetailsModel GetMovieDetails(int id)
+        public bool DeleteMovie(int id)
         {
-            var movie = _movieRepository.GetById(id);
+            var movie = _movieRepository.DeleteById(id);
 
-            if (movie != null) 
+            if (movie == null) { return false; }
+
+            return true;
+        }
+
+        public async Task<MovieDetailsModel> GetMovieDetails(int id)
+        {
+            var m = await _movieRepository.GetByIdWithDetailsAsync(id);
+
+            if (m != null) 
             {
                 var movieDetailsModel = new MovieDetailsModel()
                 {
-                    Id = movie.Id,
-                    PosterURL = movie.PosterUrl,
-                    Title = movie.Title,
-                    Budget = movie.Budget,
-                    Overview = movie.Overview,
-                    Tagline = movie.Tagline,
-                    Revenue = movie.Revenue
+                    Id = m.Id,
+                    Title = m.Title,
+                    PosterURL = m.PosterUrl,
+                    Overview = m.Overview,
+                    Tagline = m.Tagline,
+                    ReleaseDate = m.ReleaseDate,
+                    RunTime = m.RunTime,
+                    OriginalLanguage = m.OriginalLanguage,
+                    Budget = m.Budget,
+                    Revenue = m.Revenue,
+                    Price = m.Price,
+                    AverageRating = m.Reviews.Select(r => (decimal?)r.Rating).DefaultIfEmpty().Average(),
+                    Genres = m.MovieGenres.Select(g => g.Genre.Name).ToList(),
+                    Trailers = m.Trailers.Select(t => new TrailerModel { Name = t.Name, TrailerUrl = t.TrailerUrl }).ToList(),
+                    Casts = m.MovieCasts.Select(c => new CastModel
+                    {
+                        Id = c.CastId,
+                        Name = c.Cast.Name,
+                        Character = c.Character,
+                        ProfilePath = c.Cast.ProfilePath
+                    }).ToList()
                 };
 
                 return movieDetailsModel;
@@ -51,5 +74,7 @@ namespace Infrastructure.Services
            return _movieRepository.GetTop30Async();
             
         }
+
+     
     }
 }

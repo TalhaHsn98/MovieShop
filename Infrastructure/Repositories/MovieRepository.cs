@@ -16,11 +16,17 @@ namespace Infrastructure.Repositories
     {
         public MovieRepository(MovieShopDbContext dbContext): base(dbContext) { }
 
-        public Task<MovieDetailsModel> GetMovieDetails(int id)
+        public async Task<Movie?> GetByIdWithDetailsAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Movies.Where(m => m.Id == id)
+               .Include(m => m.MovieGenres).ThenInclude(mg => mg.Genre)
+               .Include(m => m.MovieCasts).ThenInclude(mc => mc.Cast)
+               .Include(m => m.Trailers)
+               .Include(m => m.Reviews)
+               .FirstOrDefaultAsync(m => m.Id == id);
         }
 
+     
         public async Task<List<MovieCardModel>> GetTop30Async()
         {
             return await _dbContext.Movies

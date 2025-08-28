@@ -27,10 +27,25 @@ namespace MovieShopMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> MovieDetails(int id)
         {
-            var movie = _movieService.GetMovieDetails(id);
+            var movie = await _movieService.GetMovieDetails(id);
 
             return View(movie);
         } 
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteMovie(int id)
+        {
+            var movie = _movieService.GetMovieDetails(id);
+
+            if(movie == null)
+            {
+                return NotFound();
+            }
+
+            _movieService.DeleteMovie(id);
+            return RedirectToAction("Index", "Movies");
+        }
 
         public IActionResult Privacy()
         {
