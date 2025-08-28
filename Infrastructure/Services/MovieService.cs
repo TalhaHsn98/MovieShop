@@ -30,6 +30,7 @@ namespace Infrastructure.Services
             return true;
         }
 
+
         public async Task<MovieDetailsModel> GetMovieDetails(int id)
         {
             var m = await _movieRepository.GetByIdWithDetailsAsync(id);
@@ -71,8 +72,22 @@ namespace Infrastructure.Services
 
         public Task<List<MovieCardModel>> Top30Movies()
         {
-           return _movieRepository.GetTop30Async();
-            
+            return _movieRepository.GetTop30Async();
+
+        }
+
+        public Task<List<MovieCardModel>> GetAllMovies()
+        {
+            var movies = _movieRepository.GetAll();
+            var result = movies
+                .Select(m => new MovieCardModel
+                {
+                    Id = m.Id,
+                    Title = m.Title,
+                    PosterURL = m.PosterUrl
+                }).ToList();
+
+            return Task.FromResult(result);
         }
 
      

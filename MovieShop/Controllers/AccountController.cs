@@ -1,12 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ApplicationCore.Models;
+using Microsoft.AspNetCore.Mvc;
 
-namespace MovieShopMVC.Controllers
+[Route("account")]
+public class AccountController : Controller
 {
-    public class AccountController : Controller
+    [HttpGet("login")]
+    public IActionResult Login() => View();
+
+    [ValidateAntiForgeryToken]
+    [HttpPost("login")]
+    public IActionResult Login(LoginViewModel model)
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return RedirectToAction("Top", "Movies");
+    }
+
+    [HttpGet("register")]
+    public IActionResult Register() => View();
+
+    [ValidateAntiForgeryToken]
+    [HttpPost("register")]
+    public IActionResult Register(RegisterViewModel model)
+    {
+        return RedirectToAction("Top", "Movies");
     }
 }

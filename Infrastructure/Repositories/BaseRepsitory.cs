@@ -32,7 +32,7 @@ namespace Infrastructure.Repositories
 
         public virtual IEnumerable<T> GetAll()
         {
-            return _dbContext.Set<T>().ToList();
+            return _dbContext.Set<T>().AsNoTracking().ToList();
         }
 
         public virtual async Task<T?> GetById(int id)

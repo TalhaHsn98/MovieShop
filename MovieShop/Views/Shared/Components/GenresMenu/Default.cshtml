@@ -1,0 +1,19 @@
+﻿@model List<GenreItemModel> 
+
+<a class="nav-link dropdown-toggle" href="#" id="genresDropdown" role="button"
+   data-bs-toggle="dropdown" aria-expanded="false">
+  Genres
+</a>
+<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="genresDropdown">
+  @foreach (var g in Model)
+  {
+    <li>
+      <a class="dropdown-item"
+         asp-controller="Movies"
+         asp-action="ByGenre"
+         asp-route-id="@g.Id">
+         @g.Name
+      </a>
+    </li>
+  }
+</ul>

@@ -13,6 +13,8 @@ namespace ApplicationCore.Contracts.Services
 
         Task<MovieDetailsModel> GetMovieDetails(int id);
 
+        Task<List<MovieCardModel>> GetAllMovies();
+
         bool DeleteMovie(int id);
     }
 }
