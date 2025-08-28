@@ -1,0 +1,36 @@
+﻿@model CastDetailsModel
+
+<div class="container py-4">
+    <div class="row g-4 align-items-start">
+        <div class="col-12 col-md-3">
+            <img class="img-fluid rounded shadow-sm w-100"
+                 src="@(string.IsNullOrWhiteSpace(Model.ProfilePath) ? "/images/cast-placeholder.png" : Model.ProfilePath)"
+                 alt="@Model.Name" />
+        </div>
+
+        <div class="col-12 col-md-9">
+            <h1 class="mb-1">@Model.Name</h1>
+            @if (!string.IsNullOrWhiteSpace(Model.TmdbUrl))
+            {
+                <a class="btn btn-sm btn-outline-primary mb-3" href="@Model.TmdbUrl" target="_blank" rel="noopener">TMDb</a>
+            }
+
+            <h3 class="mt-3">Movies</h3>
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
+                @foreach (var m in Model.Movies)
+                {
+                    <div class="col">
+                        <a asp-controller="Movies" asp-action="Details" asp-route-id="@m.Id" class="text-decoration-none">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="@(string.IsNullOrWhiteSpace(m.PosterURL) ? "/images/placeholder.png" : m.PosterURL)" alt="@m.Title" />
+                                <div class="card-body p-2">
+                                    <div class="small fw-semibold text-truncate">@m.Title</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

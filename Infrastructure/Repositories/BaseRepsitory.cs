@@ -16,7 +16,7 @@ namespace Infrastructure.Repositories
         {
             _dbContext = db;   
         }
-        public T DeleteById(int id)
+        public virtual T DeleteById(int id)
         {
             var entity = _dbContext.Set<T>().Find(id);
 
@@ -30,24 +30,24 @@ namespace Infrastructure.Repositories
             return null;
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return _dbContext.Set<T>().ToList();
         }
 
-        public T GetById(int id)
+        public virtual async Task<T?> GetById(int id)
         {
-            return _dbContext.Set<T>().Find(id);
+            return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public T Insert(T entity)
+        public virtual T Insert(T entity)
         {
             _dbContext.Set<T>().Add(entity);
             _dbContext.SaveChanges();
             return entity;
         }
 
-        public T Update(T entity)
+        public virtual T Update(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             _dbContext.SaveChanges();

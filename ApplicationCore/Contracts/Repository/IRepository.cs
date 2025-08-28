@@ -15,6 +15,6 @@ namespace ApplicationCore.Contracts.Repository
 
         IEnumerable<T> GetAll();
 
-        T GetById(int id);
+        Task<T?> GetById(int id);
     }
 }
