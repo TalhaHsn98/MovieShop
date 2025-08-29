@@ -15,6 +15,8 @@ namespace ApplicationCore.Contracts.Services
 
         Task<List<MovieCardModel>> GetAllMovies();
 
+        Task<List<MovieCardModel>> SearchMovies(string query, int page, int pageSize);
+
         bool DeleteMovie(int id);
     }
 }

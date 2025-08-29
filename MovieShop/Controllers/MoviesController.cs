@@ -65,9 +65,15 @@ namespace MovieShopMVC.Controllers
             return View(movies);
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Search(string q, int page = 1, int pageSize = 30)
         {
-            return View();
+            q = (q ?? string.Empty).Trim();
+            if (string.IsNullOrWhiteSpace(q))
+                return RedirectToAction(nameof(Top));
+
+            List<MovieCardModel> movies = await _movieService.SearchMovies(q, page, pageSize);
+            ViewBag.Query = q;
+            return View("Index",movies);
         }
 
 

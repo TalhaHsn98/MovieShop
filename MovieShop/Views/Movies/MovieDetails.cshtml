@@ -137,9 +137,11 @@
                 Price: <strong>@(Model.Price?.ToString("C") ?? "—")</strong>
             </div>
             <div class="modal-footer">
-                <form method="post" asp-controller="Purchases" asp-action="Buy">
+                <form method="post" asp-controller="PurchaseAndReview" asp-action="Buy">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="movieId" value="@Model.Id" />
+                    <input type="hidden" name="Title" value="@Model.Title" />
+                    <input type="hidden" name="Price" value="@Model.Price" />
                     <button type="submit" class="btn btn-success">Purchase</button>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                 </form>
@@ -155,10 +157,12 @@
                 <h5 class="modal-title">Review “@Model.Title”</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post" asp-controller="Reviews" asp-action="Create">
+            <form method="post" asp-controller="PurchaseAndReview" asp-action="Create">
                 @Html.AntiForgeryToken()
                 <div class="modal-body">
                     <input type="hidden" name="movieId" value="@Model.Id" />
+                    <input type="hidden" name="title" value="@Model.Title" />
+
                     <div class="mb-3">
                         <label class="form-label">Rating</label>
                         <select class="form-select" name="rating" required>

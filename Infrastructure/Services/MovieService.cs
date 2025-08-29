@@ -90,6 +90,25 @@ namespace Infrastructure.Services
             return Task.FromResult(result);
         }
 
-     
+        public Task<List<MovieCardModel>> SearchMovies(string query, int page, int pageSize)
+        {
+            query = query.Trim();
+
+            var movies = _movieRepository.GetAll();
+
+            var result = movies.Where(m => (!string.IsNullOrEmpty(m.Title) && m.Title.Contains(query, StringComparison.OrdinalIgnoreCase))
+                                        ||(!string.IsNullOrEmpty(m.Overview) && m.Overview.Contains(query,StringComparison.OrdinalIgnoreCase)))
+                        .Skip((page-1)*pageSize)
+                        .Take(pageSize)
+                        .Select(m => new MovieCardModel 
+                        {
+                            Id = m.Id,
+                            Title = m.Title,
+                            PosterURL = m.PosterUrl
+                        })
+                        .ToList();
+
+            return Task.FromResult(result);
+        }
     }
 }

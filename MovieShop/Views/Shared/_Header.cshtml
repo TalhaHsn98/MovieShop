@@ -19,6 +19,12 @@
                     @await Component.InvokeAsync("GenresMenu")
                 </li>
             </ul>
+            <form class="d-flex ms-3" asp-controller="Movies" asp-action="Search" method="get" role="search">
+                <input class="form-control me-2" type="search" name="q"
+                         placeholder="Search movies…" aria-label="Search"
+                         value="@(ViewBag.Query ?? String.Empty)" />
+                <button class="btn btn-outline-success" type="submit">Search</button>
+           </form>
 
             <ul class="navbar-nav ms-3">
                 <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Login">Login</a></li>
