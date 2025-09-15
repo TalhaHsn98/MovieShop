@@ -13,6 +13,8 @@ namespace ApplicationCore.Models
 
         public string PosterURL { get; set; }
 
+        public string BackdropURL { get; set; }
+
         public decimal? Budget { get; set; }
         public string? Overview { get; set; }
         public decimal? Revenue { get; set; }

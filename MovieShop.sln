@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36301.6 d17.14
+VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieShopMVC", "MovieShop\MovieShopMVC.csproj", "{848B3770-0249-4F47-9457-1AF2DE62EEB3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationCore", "ApplicationCore\ApplicationCore.csproj", "{070290E9-6416-4305-8BD7-CDBCB83AD18E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{C9FF384A-806D-4773-8826-61EFCA6CD3D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncConsoleApp", "AsyncConsoleApp\AsyncConsoleApp.csproj", "{2ECB3093-4BF0-4CA0-B1FE-756E3A1C04E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{C9FF384A-806D-4773-8826-61EFCA6CD3D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9FF384A-806D-4773-8826-61EFCA6CD3D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9FF384A-806D-4773-8826-61EFCA6CD3D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ECB3093-4BF0-4CA0-B1FE-756E3A1C04E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ECB3093-4BF0-4CA0-B1FE-756E3A1C04E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ECB3093-4BF0-4CA0-B1FE-756E3A1C04E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ECB3093-4BF0-4CA0-B1FE-756E3A1C04E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

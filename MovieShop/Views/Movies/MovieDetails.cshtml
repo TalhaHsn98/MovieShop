@@ -1,58 +1,67 @@
 ﻿@model ApplicationCore.Models.MovieDetailsModel
+@{
+    var bgUrl = !string.IsNullOrWhiteSpace(Model.BackdropURL)
+        ? Model.BackdropURL
+        : (!string.IsNullOrWhiteSpace(Model.PosterURL) ? Model.PosterURL : "/images/placeholder-wide.png");
+}
 
-<div class="container py-4">
+<div class="movie-hero mb-8">
+  <div class="hero-bg" style="background-image:url('@bgUrl');"></div>
+  <div class="hero-overlay"></div>
 
+  <div class="container py-5 hero-content">
     <div class="row g-4 align-items-start">
-        <div class="col-12 col-md-3">
-            <img class="img-fluid rounded shadow-sm w-100"
-                 src="@(string.IsNullOrWhiteSpace(Model.PosterURL) ? "/images/placeholder.png" : Model.PosterURL)"
-                 alt="@Model.Title" />
+      <div class="col-12 col-md-3 d-flex justify-content-center">
+        <img class="img-fluid rounded shadow w-100"
+             src="@(string.IsNullOrWhiteSpace(Model.PosterURL) ? "/images/placeholder.png" : Model.PosterURL)"
+             alt="@Model.Title" style="max-width: 300px;" />
+      </div>
+
+      <div class="col-12 col-md-6">
+        <h1 class="mb-2 text-white">@Model.Title</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.Tagline))
+        {
+            <div class="text-dim mb-2">@Model.Tagline</div>
+        }
+
+        <div class="mb-2 small text-dim">
+          @if (Model.RunTime.HasValue) { <span>@Model.RunTime m</span> }
+          @if (Model.ReleaseDate.HasValue) {   <span class="mx-2" aria-hidden="true">|</span>
+                                                <span>@Model.ReleaseDate.Value.ToString("yyyy")</span> }
+        </div>
+        <div class="mb-3">
+          @foreach (var g in Model.Genres ?? Enumerable.Empty<string>())
+          {
+          <span class="d-inline-block px-2 py-1 me-2 mb-2 border border-white text-white rounded-pill bg-transparent">
+            @g
+          </span>
+          }
+          @if (Model.AverageRating.HasValue)
+          { <span class="rating-badge ms-1">@Model.AverageRating.Value.ToString("0.0")</span> }
         </div>
 
-        <div class="col-12 col-md-6">
-            <h1 class="mb-1">@Model.Title</h1>
-            @if (!string.IsNullOrWhiteSpace(Model.Tagline))
-            {
-                <div class="text-muted mb-2">@Model.Tagline</div>
-            }
+        @if (!string.IsNullOrWhiteSpace(Model.Overview))
+        { <p class="mb-0 text-dim">@Model.Overview</p> }
+      </div>
 
-            <div class="mb-2 small text-muted">
-                @if (Model.RunTime.HasValue)
-                {
-                    <span>@Model.RunTime m</span>
-                }
-                @if (Model.ReleaseDate.HasValue)
-                {
-                    <span class="ms-3">@Model.ReleaseDate.Value.ToString("yyyy")</span>
-                }
-            </div>
-
-            <div class="mb-3">
-                @foreach (var g in Model.Genres ?? Enumerable.Empty<string>())
-                {
-                    <span class="badge bg-secondary me-1">@g</span>
-                }
-                @if (Model.AverageRating.HasValue)
-                {
-                    <span class="badge bg-success ms-1">@Model.AverageRating.Value.ToString("0.0")</span>
-                }
-            </div>
-
-            @if (!string.IsNullOrWhiteSpace(Model.Overview))
-            {
-                <p class="mb-0">@Model.Overview</p>
-            }
-        </div>
-
-        <div class="col-12 col-md-3 d-grid gap-2">
-            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">
-                REVIEW
-            </button>
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#buyModal">
-                BUY @((Model.Price?.ToString("C")) ?? "")
-            </button>
-        </div>
+      <div class="col-12 col-md-3 d-grid gap-2">
+        <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#reviewModal">REVIEW</button>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#buyModal">
+          BUY @((Model.Price?.ToString("C")) ?? "")
+        </button>
+      </div>
     </div>
+  </div>
+</div>
+
+<div class="bg-white">
+  <div class="container">
+    <hr class="my-4" />
+    <div class="row g-4">
+    </div>
+  </div>
+</div>
+
 
     <hr class="my-4" />
 

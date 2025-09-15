@@ -42,6 +42,7 @@ namespace Infrastructure.Services
                     Id = m.Id,
                     Title = m.Title,
                     PosterURL = m.PosterUrl,
+                    BackdropURL = m.BackdropUrl,
                     Overview = m.Overview,
                     Tagline = m.Tagline,
                     ReleaseDate = m.ReleaseDate,

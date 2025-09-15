@@ -73,6 +73,11 @@ namespace MovieShopMVC.Controllers
 
             List<MovieCardModel> movies = await _movieService.SearchMovies(q, page, pageSize);
             ViewBag.Query = q;
+
+            if (movies == null || movies.Count == 0)
+            {
+                ViewBag.Message = $"Sorry we couldn't find any movies matching \"{q}\".";
+            }
             return View("Index",movies);
         }
 
